@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分页工具栏</title>
+    <link rel="stylesheet" href="../plugins/elementui/index.css">
+    <script src="../js/vue.js"></script>
+    <script src="../plugins/elementui/index.js"></script>
+</head>
+<body>
+<div id="app">
+    <el-table :data="tableData" border style="width: 100%">
+        <el-table-column prop="date" label="日期" width="180"></el-table-column>
+        <el-table-column prop="name" label="姓名" width="180"></el-table-column>
+        <el-table-column prop="address" label="地址"></el-table-column>
+    </el-table>
+<!--
+size-change: 每页显示的记录数 变更时触发
+current-change：页码变更时触发
+current-page：当前页码
+page-sizes: 页面大小的下拉选择框
+page-size: 页面大小，值必须在page-sizes中存在
+layout: 定义工具栏显示哪些组件 total: 是否显示总记录数 sizes:是否显示大小的下拉选择框
+       prev是否显示上一页, pager 显示可选择的页面， next:下一页, jumper 输入页码
+total: 总记录数
+-->
+    <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage4"
+            :page-sizes="[100, 200, 300, 10]"
+            :page-size="10"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="410">
+    </el-pagination>
+</div>
+<script type="text/javascript">
+    var vue = new Vue({
+        el: '#app',
+        data() {
+            return {
+                currentPage4: 1,
+                tableData: [{
+                    date: '2016-05-02',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄'
+                }, {
+                    date: '2016-05-04',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1517 弄'
+                }, {
+                    date: '2016-05-01',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1519 弄'
+                }, {
+                    date: '2016-05-03',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1516 弄'
+                }]
+            }
+        },
+        created() {
+        },
+        mounted() {
+        },
+        // 自定义方法
+        methods: {
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                console.log(`当前页: ${val}`);
+            }
+        }
+    });
+</script>
+</body>
+</html>

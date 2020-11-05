@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- 事务管理器  -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--
+        开启事务控制的注解支持, 使用spring声明事务时，默认会使用jdk动态代理来创建@Transactional注解的service类
+           在dubbo2.6.0的版本里，使用jdk来创建的话是不能注册到zookeeper。
+
+        注意：此处必须加入proxy-target-class="true"，
+              需要进行事务控制，会由Spring框架产生代理对象，接口是什么?org.spr......SpringProxy 可以发布上去，
+                注册到zookeeper上的接口为springproxy 消费者也没法调用(接口对不上)，使用接口com.ihteima.service.CheckItemService
+             解决：业务实现类上@Service(dubbo, 加上属性interfaceClass=接口.class)
+              Dubbo需要将Service发布为服务，要求必须使用cglib创建代理对象。
+
+         如果dubbo的版本为2.6.2,就没有上面的问题。mvc中需要扫controller包
+    -->
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+
+    <!--  导入dao  -->
+    <import resource="classpath:applicationContext-dao.xml"/>
+</beans>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+<!--静态资源过滤-->
+    <security:http pattern="/css/**" security="none"/>
+    <security:http pattern="/img/**" security="none"/>
+    <security:http pattern="/js/**" security="none"/>
+    <security:http pattern="/plugins/**" security="none"/>
+    <security:http pattern="/login.html" security="none"/>
+    <security:http pattern="/fail.html" security="none"/>
+
+    <security:http auto-config="true" use-expressions="true">
+        <!--只要认证通过就可以访问isAuthenticated-->
+        <security:intercept-url pattern="/**"  access="isAuthenticated()" />
+        <security:form-login
+                login-page="/login.html"
+                login-processing-url="/login.do"
+                username-parameter="username"
+                password-parameter="password"
+                default-target-url="/pages/main.html"
+                authentication-failure-url="/fail.html"
+                always-use-default-target="true"
+        />
+    <!--  security对于内嵌文档(frame) main.html <iframe>访问策略控制  -->
+        <security:headers>
+            <!--内嵌文档 SAMEORIGIN:属于本网站页面的-->
+            <security:frame-options policy="SAMEORIGIN"/>
+        </security:headers>
+        <security:csrf disabled="true"/>
+        <security:logout logout-success-url="/login.html" invalidate-session="true" logout-url="/logout.do"/>
+    </security:http>
+
+    <security:authentication-manager>
+        <security:authentication-provider user-service-ref="springSecurityUserService" >
+            <security:password-encoder ref="encoder"/>
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+    <security:global-method-security pre-post-annotations="enabled"/>
+    <bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
+</beans>

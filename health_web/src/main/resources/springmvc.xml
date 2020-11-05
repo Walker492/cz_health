@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <!--不需要视图解析器，项目中的所有的请求都返回json数据结构-->
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <property name="supportedMediaTypes" value="application/json"/>
+                <property name="features">
+                    <list>
+                        <!--Map类型格式化，接收参数允许空值
+                        User{name, age} => new User('zhangsan') => 前端的json user{username: 'zhangsan'} 少了个age属性
+                        加上WriteMapNullValue
+                        User{name, age} => new User('zhangsan') => 前端的json user{username: 'zhangsan',age:null} age为null
+                        -->
+                        <value>WriteMapNullValue</value>
+                        <!--日期类型格式化  默认是转成数值16xxxx..... 毫秒级的时间戳
+                        WriteDateUseDateFormat 转成前端使用时，就用这个格式 yyyy-MM-dd hh:mm:ss
+                        -->
+                        <value>WriteDateUseDateFormat</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    <!-- 指定应用名称 -->
+    <dubbo:application name="health_web" />
+    <!--指定服务注册中心地址-->
+    <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
+    <!--批量扫描 dubbo2.6.0下，mvc不需要再扫controller
+        2.6.2 则mvc要扫一次controller
+		<context:component-scan/>
+    -->
+    <dubbo:annotation package="com.itheima.health" />
+    <!--
+        超时全局设置 10分钟
+        check=false 不检查服务提供方，开发阶段建议设置为false
+        check=true 启动时检查服务提供方，如果服务提供方没有启动则报错
+    -->
+    <dubbo:consumer timeout="600000" check="false"/>
+    <!--文件上传组件-->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="104857600" />
+        <property name="maxInMemorySize" value="4096" />
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
+<!--  导入redis配置文件  -->
+    <import resource="classpath:spring-redis.xml"/>
+    <!--引入security-->
+    <import resource="classpath:spring-security.xml"/>
+</beans>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>标签页</title>
+    <link rel="stylesheet" href="../plugins/elementui/index.css">
+    <script src="../js/vue.js"></script>
+    <script src="../plugins/elementui/index.js"></script>
+</head>
+<body>
+<div id="app">
+    <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+        <el-tab-pane label="用户管理" name="first">用户管理</el-tab-pane>
+        <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
+        <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
+        <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
+    </el-tabs>
+</div>
+<script type="text/javascript">
+    var vue = new Vue({
+        el: '#app',
+        data() {
+            return {
+                activeName: 'third'
+            };
+        },
+        methods: {
+            handleClick(tab, event) {
+                console.log(tab, event);
+            }
+        }
+    });
+</script>
+</body>
+</html>

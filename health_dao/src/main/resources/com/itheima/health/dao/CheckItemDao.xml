@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itheima.health.dao.CheckItemDao">
+    <select id="findAll" resultType="checkitem">
+        select * from t_checkitem
+    </select>
+
+    <insert id="add" parameterType="checkitem">
+        insert into t_checkitem(code,name,sex,age,price,type,remark,attention)
+        values (#{code},#{name},#{sex},#{age},#{price},#{type},#{remark},#{attention})
+    </insert>
+
+    <select id="findPage" parameterType="String" resultType="checkitem">
+        select * from t_checkitem
+        <where>
+            <if test="value != null and value.length>0">
+                code like #{queryString} or name like #{queryString}
+            </if>
+        </where>
+    </select>
+
+    <select id="findCountByCheckItemId" parameterType="int" resultType="int">
+        select count(1) from t_checkgroup_checkitem where checkitem_id=#{id}
+    </select>
+
+    <delete id="deleteById" parameterType="int">
+        delete from t_checkitem where id=#{id}
+    </delete>
+
+    <select id="findById" parameterType="int" resultType="checkitem">
+        select * From t_checkitem where id=#{id}
+    </select>
+
+    <update id="update" parameterType="checkitem">
+        update t_checkitem
+        set
+            code=#{code},
+            name=#{name},
+            sex=#{sex},
+            age=#{age},
+            price=#{price},
+            type=#{type},
+            remark=#{remark},
+            attention=#{attention}
+        where id=#{id}
+    </update>
+
+    <select id="findCheckItemListById" resultType="com.itheima.health.pojo.CheckItem">
+        select * from t_checkitem  where id
+        in (select checkitem_id from t_checkgroup_checkitem where checkgroup_id=#{id})
+    </select>
+</mapper>

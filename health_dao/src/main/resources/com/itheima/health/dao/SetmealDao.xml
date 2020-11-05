@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itheima.health.dao.SetmealDao">
+
+    <insert id="add" parameterType="setmeal" keyProperty="id" useGeneratedKeys="true">
+        insert into t_setmeal (name,code,helpCode,sex,age,price,remark,attention,img)
+        values (#{name},#{code},#{helpCode},#{sex},#{age},#{price},#{remark},#{attention},#{img})
+    </insert>
+
+    <insert id="addSetmealCheckGroup" parameterType="int">
+        insert into t_setmeal_checkgroup (setmeal_id,checkgroup_id)
+        values (#{setmealId},#{checkgroupId})
+    </insert>
+
+    <select id="findByCondition" parameterType="String" resultType="setmeal">
+        select * From t_setmeal
+        <if test="value != null and value.length > 0">
+            where code like #{queryString} or name like #{queryString} or helpCode like #{queryString}
+        </if>
+    </select>
+
+    <select id="findById" parameterType="int" resultType="setmeal">
+        select * from t_setmeal where id=#{id}
+    </select>
+
+    <select id="findCheckgroupIdsBySetmealId" parameterType="int" resultType="int">
+        select checkgroup_id from t_setmeal_checkgroup where setmeal_id=#{id}
+    </select>
+
+    <update id="update" parameterType="setmeal">
+        update t_setmeal
+        set
+            name=#{name},
+            code=#{code},
+            helpCode=#{helpCode},
+            sex=#{sex},
+            age=#{age},
+            price=#{price},
+            remark=#{remark},
+            attention=#{attention},
+            img=#{img}
+        where id=#{id}
+    </update>
+
+    <delete id="deleteSetmealCheckGroup" parameterType="int">
+        delete from t_setmeal_checkgroup where setmeal_id=#{id}
+    </delete>
+
+    <select id="findOrderCountBySetmealId" parameterType="int" resultType="int">
+        select count(1) from t_order where setmeal_id=#{id}
+    </select>
+
+    <delete id="deleteById" parameterType="int">
+        delete from t_setmeal where id=#{id}
+    </delete>
+
+    <select id="findImgs" resultType="string">
+        select img from t_setmeal
+    </select>
+
+    <select id="findAll" resultType="setmeal">
+        select * From t_setmeal
+    </select>
+
+    <select id="findDetailById" parameterType="int" resultMap="setmealDetailResultMap">
+        select s.id,s.name,s.age,s.sex,s.remark,s.img,
+            sc.checkgroup_id,g.name checkgroup_name,g.remark checkgroup_remark,
+            cc.checkitem_id,ci.name checkitem_name
+        From t_setmeal s
+        left join t_setmeal_checkgroup sc on s.id=sc.setmeal_id
+        left join t_checkgroup g on sc.checkgroup_id=g.id
+        left join t_checkgroup_checkitem cc on g.id=cc.checkgroup_id
+        left join t_checkitem ci on cc.checkitem_id=ci.id
+        where s.id=#{id}
+    </select>
+    <resultMap id="setmealDetailResultMap" type="Setmeal">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="sex" column="sex"/>
+        <result property="age" column="age"/>
+        <result property="remark" column="remark"/>
+        <result property="img" column="img"/>
+        <collection property="checkGroups" ofType="CheckGroup">
+            <id property="id" column="checkgroup_id"/>
+            <result property="name" column="checkgroup_name"/>
+            <result property="remark" column="checkgroup_remark"/>
+            <collection property="checkItems" ofType="CheckItem">
+                <id property="id" column="checkitem_id"/>
+                <result property="name" column="checkitem_name"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+
+    <select id="findDetailById2" resultMap="setmealResultMap">
+    select * from t_setmeal where id=#{id}
+</select>
+
+    <!--column="id" 套餐的id传给调用select语句(其它命名空间中的方法，不需要在接口中声明，只要在对应的xml映射文件存在即可)-->
+    <resultMap type="Setmeal" id="setmealResultMap">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+        <result column="helpCode" property="helpCode"/>
+        <result column="sex" property="sex"/>
+        <result column="age" property="age"/>
+        <result column="price" property="price"/>
+        <result column="remark" property="remark"/>
+        <result column="attention" property="attention"/>
+        <result column="img" property="img"/>
+        <collection property="checkGroups" column="id"
+                    select="com.itheima.health.dao.CheckGroupDao.findCheckGroupListById">
+        </collection>
+    </resultMap>
+
+    <select id="findCheckGroupListBySetmealId" resultType="Checkgroup" parameterType="int">
+     select * from t_checkgroup where id in (
+        select checkgroup_id from t_setmeal_checkgroup where setmeal_id=#{id}
+     )
+    </select>
+    <select id="findCheckItemByCheckGroupId" resultType="checkitem" parameterType="int">
+     select * from t_checkitem where id in (
+        select checkitem_id from t_checkgroup_checkitem where checkgroup_id=#{id}
+     )
+    </select>
+
+    <select id="getSetmealReport" resultType="map">
+        select s.name, t.value from t_setmeal s, (
+            select setmeal_id,count(1) value from t_order group by setmeal_id
+        ) t where s.id=t.setmeal_id
+    </select>
+</mapper>

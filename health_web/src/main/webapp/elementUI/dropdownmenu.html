@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>下拉菜单 </title>
+    <link rel="stylesheet" href="../plugins/elementui/index.css">
+    <script src="../js/vue.js"></script>
+    <script src="../plugins/elementui/index.js"></script>
+    <style>
+        .el-dropdown-link {
+            cursor: pointer;
+            color: #409EFF;
+        }
+        .el-icon-arrow-down {
+            font-size: 12px;
+        }
+        .demonstration {
+            display: block;
+            color: #8492a6;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <el-dropdown trigger="click">
+      <span class="el-dropdown-link">
+        下拉菜单<i class="el-icon-arrow-down el-icon--right"></i>
+      </span>
+        <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item icon="el-icon-plus">黄金糕</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-circle-plus">狮子头</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-circle-plus-outline">螺蛳粉</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-check">双皮奶</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-circle-check">蚵仔煎</el-dropdown-item>
+        </el-dropdown-menu>
+    </el-dropdown>
+</div>
+<script type="text/javascript">
+    var vue = new Vue({
+        el: '#app',
+        data() {
+            return {};
+        },
+        created() {
+        },
+        mounted() {
+        },
+        // 自定义方法
+        methods: {}
+    });
+</script>
+</body>
+</html>
