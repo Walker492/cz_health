@@ -12,8 +12,16 @@
     <link rel="stylesheet" href="../css/style.css">
     <script src="../js/echarts.js"></script>
 </head>
+<!-- 引入ElementUI样式 -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- 引入ElementUI组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
 <body class="hold-transition">
 <div id="app">
+
+
     <div class="content-header">
         <h1>统计分析<small>会员数量</small></h1>
         <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
@@ -22,6 +30,21 @@
             <el-breadcrumb-item>会员数量</el-breadcrumb-item>
         </el-breadcrumb>
     </div>
+
+    <!--日期选择的窗口-->
+    <div class="block">
+        <center><span class="demonstration">选择月份</span>
+            <el-date-picker
+                    v-model="value"
+                    type="monthrange"
+                    range-separator="至"
+                    start-placeholder="开始月份"
+                    end-placeholder="结束月份">
+            </el-date-picker>
+            <el-button type="primary" icon="el-icon-search" @click="findByMonths()">搜索</el-button>
+        </center>
+    </div>
+
     <div class="app-container">
         <div class="box">
             <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
@@ -31,36 +54,107 @@
 </div>
 </body>
 <!-- 引入组件库 -->
-<script src="../js/vue.js"></script>
 <script src="../js/axios-0.18.0.js"></script>
 <script type="text/javascript">
-    // 基于准备好的dom，初始化echarts实例
-    var myChart1 = echarts.init(document.getElementById('chart1'));
 
-    // 使用刚指定的配置项和数据显示图表。
-    //myChart.setOption(option);
+    var vue = new Vue({
+        el: '#app',
+        data() {
+            return {
+                value: '',
+            }
+        },
+        mounted() {
+            //初始化echarts
+            this.echartsInit();
+        },
+        methods: {
+            //“确定”按钮绑定的方法
+            findByMonths() {
+                this.echartsInit();
+            },
+            //将date格式转为yyyy-MM-dd的格式
+            formatDate: function (day) {
+                var y = day.getFullYear();
+                var m = day.getMonth() + 1;
+                var d = day.getDate();
+                if (m < 10) m = "0" + m;
+                if (d < 10) d = "0" + d;
+                return y + '-' + m + "-" + d;
+            },
+            //初始化echarts的方法
+            echartsInit() {
+                //判断是否填写日期
+                if (this.value[0] == undefined) {
+                    // 基于准备好的dom，初始化echarts实例
+                    var myChart1 = echarts.init(document.getElementById('chart1'));
+                    // 使用刚指定的配置项和数据显示图表。
+                    axios.get("/report/getMemberReport.do").then((res) => {
+                        let options = {
+                            title: {
+                                text: '会员数量'
+                            },
+                            tooltip: {},
+                            legend: {
+                                data: ['会员数量']
+                            },
+                            xAxis: {
+                                data: res.data.data.months
+                            },
+                            yAxis: {
+                                type: 'value'
+                            },
+                            series: [{
+                                name: '会员数量',
+                                type: 'line',
+                                data: res.data.data.memberCount
+                            }]
+                        };
+                        myChart1.setOption(options);
+                        window.addEventListener('resize', function () {
+                            myChart1.resize()
+                        })
+                    });
+                } else {
+                    // 基于准备好的dom，初始化echarts实例
+                    var myChart1 = echarts.init(document.getElementById('chart1'));
+                    var submitDate = {
+                        beginDate: this.formatDate(this.value[0]),
+                        endDate: this.formatDate(this.value[1])
+                    };
+                    //alert(submitDate);
+                    // 使用刚指定的配置项和数据显示图表。
+                    axios.post("/report/getMemberReportByMonth.do", submitDate).then((res) => {
+                        var options = {
+                            title: {
+                                text: '会员数量'
+                            },
+                            tooltip: {},
+                            legend: {
+                                data: ['会员数量']
+                            },
+                            xAxis: {
+                                data: res.data.data.months
+                            },
+                            yAxis: {
+                                type: 'value'
+                            },
+                            series: [{
+                                name: '会员数量',
+                                type: 'line',
+                                data: res.data.data.memberCount
+                            }]
+                        };
+                        myChart1.setOption(options);
 
-    axios.get("/report/getMemberReport.do").then((res) => {
-        myChart1.setOption({
-            title: {
-                text: '会员数量'
-            },
-            tooltip: {},
-            legend: {
-                data: ['会员数量']
-            },
-            xAxis: {
-                data: res.data.data.months
-            },
-            yAxis: {
-                type: 'value'
-            },
-            series: [{
-                name: '会员数量',
-                type: 'line',
-                data: res.data.data.memberCount
-            }]
-        });
+                        window.addEventListener('resize', function () {
+                            myChart1.resize()
+                        })
+                    });
+                }
+
+            }
+        }
     });
 </script>
 </html>
