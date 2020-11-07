@@ -47,6 +47,7 @@ public class SetmealMobileController {
             return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS,list);
         }else {
 //            不存在话 调用dao层，存到redis，再返回
+
             List<Setmeal> setmealList = setmealService.findAll();
             setmealList.forEach(s -> s.setImg(QiNiuUtils.DOMAIN+s.getImg()));
 //            存入到redis
