@@ -4,7 +4,6 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.itheima.health.constant.MessageConstant;
 import com.itheima.health.entity.Result;
 import com.itheima.health.service.MemberService;
-import com.itheima.health.service.OrderService;
 import com.itheima.health.service.ReportService;
 import com.itheima.health.service.SetmealService;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -180,5 +179,79 @@ public class ReportController {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    /**
+     * 会员数量gender饼图
+     *
+     * @return
+     */
+    @GetMapping("/getMemberGenderPieReport")
+    public Result getMemberGenderPieReport() {
+        // 调用服务查询套餐预约占比, map {value, name} name=套餐名称
+        List<Map<Integer, String>> list = memberService.getMemberGenderPieReport();
+
+        //构造返回数据
+        List<Map<String, String>> genderAndCount = new ArrayList<>();
+
+        List<String> gender = new ArrayList<>();
+
+        if (null != list & list.size() > 0) {
+            for (Map<Integer, String> mapInDb : list) {
+                Map<String, String> map = new HashMap<>();
+                String sexInDb = mapInDb.get("name");
+                if (null == sexInDb) {
+                    map.put("name", "未知性别");
+                    if (!gender.contains("未知性别")) {
+                        gender.add("未知性别");
+                    }
+                } else if (sexInDb.equals("1")) {
+                    map.put("name", "男");
+                    if (!gender.contains("男")) {
+                        gender.add("男");
+                    }
+                } else if (sexInDb.equals("2")) {
+                    map.put("name", "女");
+                    if (!gender.contains("女")) {
+                        gender.add("女");
+                    }
+                }
+                map.put("value", mapInDb.get("value"));
+                genderAndCount.add(map);
+            }
+        }
+
+
+        //封装返回数据
+        Map<String, Object> resultMap = new HashMap();
+        resultMap.put("gender", gender);
+        resultMap.put("genderAndCount", genderAndCount);
+        return new Result(true, MessageConstant.GET_SETMEAL_COUNT_REPORT_SUCCESS, resultMap);
+    }
+
+    /**
+     * 会员数量年龄段饼图
+     *
+     * @return
+     */
+    @GetMapping("/getMemberAgePieReport")
+    public Result getMemberAgePieReport() {
+
+        //设置年龄段 写死
+        List<String> agePieces = new ArrayList<>();
+        agePieces.add("0-18");
+        agePieces.add("18-30");
+        agePieces.add("30-45");
+        agePieces.add("45-120");
+
+        List<Map<String, Object>> ageTotalAndAgePiece = memberService.getMemberAgePieReport(agePieces);
+
+        //封装返回数据
+        Map<String, Object> resultMap = new HashMap();
+        resultMap.put("agePieces", agePieces);
+        resultMap.put("ageTotalAndAgePiece", ageTotalAndAgePiece);
+
+        return new Result(true, MessageConstant.GET_SETMEAL_COUNT_REPORT_SUCCESS, resultMap);
     }
 }

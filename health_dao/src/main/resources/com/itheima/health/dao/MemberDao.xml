@@ -95,4 +95,13 @@
     <select id="findMemberTotalCount" resultType="int">
         select count(id) from t_member
     </select>
+    <!--会员数量gender饼图-->
+    <select id="getMemberGenderPieReport" resultType="java.util.Map">
+        select count(1) value,sex name from t_member GROUP BY sex
+    </select>
+    <!--会员数量年龄段饼图-->
+    <select id="getAgeTotalByAgePiece" resultType="java.lang.Integer">
+        select count(1) from t_member where
+         DATE_FORMAT(birthday,'%Y') between #{beginBirthDay} and #{endBirthDay}
+    </select>
 </mapper>

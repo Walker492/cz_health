@@ -2,8 +2,10 @@ package com.itheima.health.dao;
 
 import com.github.pagehelper.Page;
 import com.itheima.health.pojo.Member;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -36,5 +38,10 @@ public interface MemberDao {
     Integer findMemberCountByDate(String date);
     Integer findMemberCountAfterDate(String date);
     Integer findMemberTotalCount();
+    //会员数量gender饼图
+    List<Map<Integer, String>> getMemberGenderPieReport();
+
+    //会员数量年龄段饼图
+    Integer getAgeTotalByAgePiece(@Param("beginBirthDay") Integer beginBirthDay, @Param("endBirthDay") Integer endBirthDay);
 
 }

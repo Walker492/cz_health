@@ -3,6 +3,7 @@ package com.itheima.health.service;
 import com.itheima.health.pojo.Member;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -32,4 +33,11 @@ public interface MemberService {
      * @return
      */
     List<Integer> getMemberReport(List<String> months);
+
+    //会员数量gender饼图
+    List<Map<Integer, String>> getMemberGenderPieReport();
+
+
+    //会员数量年龄段饼图
+    List<Map<String, Object>> getMemberAgePieReport(List<String> agePieces);
 }
