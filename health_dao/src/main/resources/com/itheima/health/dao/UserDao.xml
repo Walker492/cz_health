@@ -32,4 +32,59 @@
             </collection>
         </collection>
     </resultMap>
+
+    <select id="findByCondition" parameterType="String" resultType="user">
+        select id,
+        DATE_FORMAT(birthday,'%Y-%m-%d') as birthday,
+        gender,
+        username,
+        password,
+        remark,
+        station,
+        telephone from t_user
+        <if test="value != null and value.length > 0">
+            where username like #{queryString} or gender like #{queryString} or birthday like #{queryString}
+        </if>
+    </select>
+
+    <insert id="add" parameterType="user" keyProperty="id" useGeneratedKeys="true">
+        insert into t_user (birthday,gender,username,password,remark,telephone)
+        values (#{birthday},#{gender},#{username},#{password},#{remark},#{telephone})
+    </insert>
+    <insert id="addUserRole" parameterType="int">
+        insert into t_user_role (user_id,role_id)
+        values(#{userId},#{roleId})
+    </insert>
+
+    <select id="findById" parameterType="int" resultType="user">
+        select * from t_user where id = #{id}
+    </select>
+    <select id="findRoleIdsByUserId" parameterType="int" resultType="int">
+        select role_id from t_user_role where user_id = #{id}
+    </select>
+
+    <update id="update" parameterType="user">
+        update t_user
+        set
+            birthday = #{birthday},
+            gender = #{gender},
+            username = #{username},
+            password = #{password},
+            remark = #{remark},
+            station = #{station},
+            telephone = #{telephone}
+        where id = #{id}
+    </update>
+    <delete id="deleteUserRole" parameterType="int">
+        delete from t_user_role where user_id = #{id}
+    </delete>
+
+    <delete id="deleteById" parameterType="int">
+        delete from t_user where id=#{id}
+    </delete>
+    <select id="findCountByUserId" parameterType="int" resultType="int">
+        select count(1) from t_user_role where user_id=#{id}
+    </select>
+
+
 </mapper>

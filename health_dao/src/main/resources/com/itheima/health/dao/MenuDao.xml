@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace属性：名称空间， 写接口的全限定名-->
+<mapper namespace="com.itheima.health.dao.MenuDao">
+
+    <!--select标签用于插叙；  id属性值就是接口的方法名，
+        resultType ：返回值的类型
+                    如果是集合，写泛型即可；
+    -->
+
+    <!--新增菜单 且parentMenuId为null-->
+    <insert id="add" parameterType="Menu">
+        insert into t_menu(name,linkUrl,path,priority,description,icon,parentMenuId,level)
+        values (#{name},#{linkUrl},#{path},#{priority},#{description},#{icon},#{parentMenuId},1)
+    </insert>
+
+    <!--新增菜单 且parentMenuId不为null-->
+    <insert id="addLevel" parameterType="Menu">
+        insert into t_menu(name,linkUrl,path,priority,description,icon,parentMenuId,level)
+        values (#{name},#{linkUrl},#{path},#{priority},#{description},#{icon},#{parentMenuId},2)
+    </insert>
+
+    <!--查询角色与菜单表的关联-->
+    <select id="findCountByMenu" parameterType="int" resultType="int">
+        select count(1) from t_role_menu where menu_id=#{id}
+    </select>
+
+    <!--删除菜单-->
+    <delete id="delete" parameterType="int" >
+        delete from t_menu where id = #{id}
+    </delete>
+
+    <!--查所有数据-->
+    <select id="findAll" resultType="menu">
+        select * from t_menu
+    </select>
+
+    <select id="findPage" parameterType="String" resultType="Menu">
+        select * from t_menu
+        <where>
+            <if test="value != null and value.length>0">
+                name like #{queryString} or linkUrl like #{queryString}
+            </if>
+        </where>
+    </select>
+
+    <select id="findById" parameterType="int" resultType="menu">
+        select * from t_menu where id = #{id}
+    </select>
+
+    <!--更新菜单数据 且parentMenuId为空-->
+    <update id="update" parameterType="menu">
+        update t_menu
+        set
+          name = #{name},
+          linkUrl = #{linkUrl},
+          path = #{path},
+          priority = #{priority},
+          icon = #{icon},
+          description =#{description},
+          parentMenuId=#{parentMenuId},
+          level=1
+          where id = #{id}
+    </update>
+
+    <!--更新菜单数据 且parentMenuId不为空-->
+    <update id="updateLevel" parameterType="menu">
+        update t_menu
+        set
+          name = #{name},
+          linkUrl = #{linkUrl},
+          path = #{path},
+          priority = #{priority},
+          icon = #{icon},
+          description = #{description},
+          parentMenuId=#{parentMenuId},
+          level=2
+          where id = #{id}
+    </update>
+
+</mapper>
