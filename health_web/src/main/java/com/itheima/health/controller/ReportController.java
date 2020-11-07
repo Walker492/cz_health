@@ -10,14 +10,13 @@ import com.itheima.health.service.SetmealService;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -81,6 +80,52 @@ public class ReportController {
         resultMap.put("memberCount",memberCount);
         return new Result(true, MessageConstant.GET_MEMBER_NUMBER_REPORT_SUCCESS,resultMap);
     }
+
+    /**
+     * 选择日期来绘制会员数据折线图
+     * @param submitDate
+     * @return
+     * @throws ParseException
+     */
+    @PostMapping("/getMemberReportByMonth")
+    public Result getMemberReportByMonth(@RequestBody Map<String, Object> submitDate) throws ParseException {
+        System.out.println(submitDate);
+
+        //获得12个月的数据
+        List<String> months = new ArrayList<>();
+        Calendar car = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        String beginDate = (String) submitDate.get("beginDate");
+        String endDate = (String) submitDate.get("endDate");
+        //获取开始和结束的日期
+        Date begin = sdf.parse(beginDate);
+        Date end = sdf.parse(endDate);
+        System.out.println(beginDate);
+        car.setTime(begin);
+        //months中增加上第一个月
+        months.add(sdf.format(begin));
+
+        //增加区间内的所有阅月份数据
+        while (true) {
+            car.add(Calendar.MONTH, 1);
+            Date time = car.getTime();
+            if (time.after(end)) {
+                break;
+            }
+            String format = sdf.format(time);
+            months.add(format);
+        }
+
+        //调用服务去查询12个月的数据
+        List<Integer> memberCount = memberService.getMemberReport(months);
+        Map<String, Object> map = new HashMap<>();
+        map.put("months", months);
+        map.put("memberCount", memberCount);
+        return new Result(true, MessageConstant.GET_MEMBER_NUMBER_REPORT_SUCCESS, map
+        );
+    }
+
 
     /**
      * 套餐预约占比
