@@ -38,7 +38,6 @@
         DATE_FORMAT(birthday,'%Y-%m-%d') as birthday,
         gender,
         username,
-        password,
         remark,
         station,
         telephone from t_user

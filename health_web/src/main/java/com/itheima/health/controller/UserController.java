@@ -8,6 +8,7 @@ import com.itheima.health.entity.Result;
 import com.itheima.health.service.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -94,6 +95,10 @@ public class UserController {
      */
     @PostMapping("/update")
     public Result update(@RequestBody com.itheima.health.pojo.User user, Integer[] roleIds) {
+        String password = user.getPassword();
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encode = passwordEncoder.encode(password);
+        user.setPassword(encode);
         userService.update(user,roleIds);
         return new Result(true,"更新用户成功");
     }

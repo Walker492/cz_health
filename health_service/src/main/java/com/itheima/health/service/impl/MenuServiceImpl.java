@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,5 +106,28 @@ public class MenuServiceImpl implements MenuService {
             }else {
                 menuDao.updateLevel(menu);
             }
+    }
+//    获取菜单数据
+    @Override
+    public List<Menu> getMenu() {
+        List<Menu> resultList = new ArrayList<>();
+        List<Menu> allMenuList = menuDao.findAll();
+        assemble(allMenuList, resultList);
+        return resultList;
+    }
+
+//    装配页面菜单对象
+    private void assemble(List<Menu> sourceList, List<Menu> targetList) {
+        sourceList.stream().filter((ele) -> ele.getParentMenuId() == null).forEach((ele) -> {
+            ele.setChildren(new ArrayList<>());
+            targetList.add(ele);
+        });
+        sourceList.stream().filter((ele) -> ele.getParentMenuId() != null).forEach((ele) -> {
+            for (Menu menu : targetList) {
+                if (menu.getId() == ele.getParentMenuId()) {
+                    menu.getChildren().add(ele);
+                }
+            }
+        });
     }
 }

@@ -64,13 +64,13 @@
             <el-table size="small" current-row-key="id" :data="dataList" stripe highlight-current-row>
                 <el-table-column type="index" align="center" label="序号"></el-table-column>
                 <el-table-column prop="username" label="用户名称" align="center"></el-table-column>
-                <el-table-column prop="password" label="密码" align="center"></el-table-column>
-                <el-table-column label="适用性别" align="center">
+<!--                <el-table-column prop="password" label="密码" align="center"></el-table-column>-->
+                <el-table-column label="性别" align="center">
                     <template slot-scope="scope">
                         <span>{{ scope.row.gender == '0' ? '不限' : scope.row.gender == '1' ? '男' : '女'}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="birthday" label="生日" align="center"></el-table-column>
+                <el-table-column prop="birthday" label="出生日期" align="center"></el-table-column>
                 <el-table-column prop="telephone" label="联系电话" align="center"></el-table-column>
                 <el-table-column prop="station" label="状态" align="center"></el-table-column>
                 <el-table-column prop="remark" label="备注" align="center"></el-table-column>
@@ -114,7 +114,7 @@
                                     </el-row>
                                     <el-row>
                                         <el-col :span="12">
-                                            <el-form-item label="适用性别">
+                                            <el-form-item label="性别">
                                                 <el-select v-model="formData.gender">
                                                     <el-option label="不限" value="0"></el-option>
                                                     <el-option label="男" value="1"></el-option>
@@ -130,7 +130,7 @@
                                     </el-row>
                                     <el-row>
                                         <el-col :span="24">
-                                            <el-form-item label="生日">
+                                            <el-form-item label="出生日期">
                                                 <el-date-picker
                                                         v-model="formData.birthday"
                                                         type="date"
@@ -183,7 +183,7 @@
 
             <!-- 编辑标签弹层 -->
             <div class="add-form">
-                <el-dialog title="编辑用户" :visible.sync="dialogFormVisible4Edit">
+                <el-dialog title="用户" :visible.sync="dialogFormVisible4Edit">
                     <template>
                         <el-tabs v-model="activeName" type="card">
                             <el-tab-pane label="基本信息" name="first">
@@ -202,7 +202,7 @@
                                     </el-row>
                                     <el-row>
                                         <el-col :span="12">
-                                            <el-form-item label="适用性别">
+                                            <el-form-item label="性别">
                                                 <el-select v-model="formData.gender">
                                                     <el-option label="不限" value="0"></el-option>
                                                     <el-option label="男" value="1"></el-option>
@@ -218,7 +218,7 @@
                                     </el-row>
                                     <el-row>
                                         <el-col :span="24">
-                                            <el-form-item label="生日">
+                                            <el-form-item label="出生日期">
                                                 <el-date-picker
                                                         v-model="formData.birthday"
                                                         type="date"

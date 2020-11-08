@@ -58,11 +58,11 @@
                     <el-submenu v-for="menu in menuList" :index="menu.path">
                         <template slot="title">
                             <i class="fa" :class="menu.icon"></i>
-                            {{menu.title}}
+                            {{menu.name}}
                         </template>
                         <template v-for="child in menu.children">
                             <el-menu-item :index="child.path">
-                                <a :href="child.linkUrl" target="right">{{child.title}}</a>
+                                <a :href="child.linkUrl" target="right">{{child.name}}</a>
                             </el-menu-item>
                         </template>
                     </el-submenu>
@@ -91,7 +91,12 @@
                     "path": "1",
                     "title": "工作台",
                     "icon": "fa-dashboard",
-                    "children": []
+                    "children": [{
+                        "path": "/1-1",
+                        "title": "菜单管理",
+                        "linkUrl": "menu.html",
+                        "children": []
+                    }]
                 },
                 {
                     "path": "2",
@@ -189,12 +194,6 @@
                             "title": "运营数据统计",
                             "linkUrl": "report_business.html",
                             "children": []
-                        },
-                        {
-                            "path": "/5-4",
-                            "title": "会员数量饼图",
-                            "linkUrl": "report_member_pie.html",
-                            "children": []
                         }
                     ]
                 }
@@ -203,11 +202,23 @@
         mounted() {
             axios.get('/user/getUsername.do').then(res => {
                 if (res.data.flag) {
-                    this.loginUsername = res.data.data;
+                this.loginUsername = res.data.data;
+            } else {
+                this.$message.error(res.data.message);
+            }
+        });
+            this.getMenu();
+        },
+        methods:{
+            getMenu(){
+                axios.get('/menu/getMenu.do').then(res => {
+                    if (res.data.flag){
+                    this.menuList = res.data.data;
                 } else {
                     this.$message.error(res.data.message);
                 }
             })
+            }
         }
     });
     $(function () {

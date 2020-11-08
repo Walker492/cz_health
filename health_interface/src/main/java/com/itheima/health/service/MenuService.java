@@ -24,4 +24,6 @@ public interface MenuService {
     Menu findById(int id);
 
     void update(Menu menu)throws MyException;
+
+    List<Menu> getMenu();
 }

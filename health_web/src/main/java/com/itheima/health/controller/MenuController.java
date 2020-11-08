@@ -1,6 +1,7 @@
 package com.itheima.health.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.itheima.health.constant.MessageConstant;
 import com.itheima.health.entity.PageResult;
 import com.itheima.health.entity.QueryPageBean;
 import com.itheima.health.entity.Result;
@@ -92,5 +93,10 @@ public class MenuController {
 
         return new Result(true,"编辑菜单成功");
 
+    }
+
+    @GetMapping("getMenu")
+    public Result getMenu(){
+        return new Result(true, MessageConstant.GET_MENU_SUCCESS, menuService.getMenu());
     }
 }
