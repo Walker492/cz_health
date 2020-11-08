@@ -13,10 +13,10 @@ public interface RoleDao {
     List<Role> findAll();
 	
 	
-	//¸Ä
+	//æ”¹
 	
 	 /**
-     * ·ÖÒ³²éÑ¯
+     * åˆ†é¡µæŸ¥è¯¢
      * @param queryString
      * @return
      */
@@ -24,7 +24,7 @@ public interface RoleDao {
 
 
     /**
-     * Ôö¼Ó
+     * å¢åŠ 
      * @param role
      * @return
      */
@@ -33,7 +33,7 @@ public interface RoleDao {
 
 
  /**
-     * ĞÂÔöÀïÃæµÄÈ¨ÏŞ²éÑ¯
+     * æ–°å¢é‡Œé¢çš„æƒé™æŸ¥è¯¢
      * @return
      */
     List<Permission> findAllPermission();
@@ -41,7 +41,7 @@ public interface RoleDao {
 
 
     /**
-     * ĞÂÔöÀïÃæµÄ²Ëµ¥²éÑ¯
+     * æ–°å¢é‡Œé¢çš„èœå•æŸ¥è¯¢
      * @return
      */
     List<Menu> findAllMenu();
@@ -51,7 +51,7 @@ public interface RoleDao {
 
 
 
-    //É¾³ı
+    //åˆ é™¤
    void delete(Integer id);
     Integer findCountRoleMenu();
 
@@ -60,28 +60,28 @@ public interface RoleDao {
     Integer findCountRolePermission();
 
     /**
-     * ±à¼­Êı¾İ»ØÏÔ1Role
+     * ç¼–è¾‘æ•°æ®å›æ˜¾1Role
      */
     Role updateOne(Integer id);
 
 
 
     /**
-     * ±à¼­Êı¾İ»ØÏÔ2Menu
+     * ç¼–è¾‘æ•°æ®å›æ˜¾2Menu
      */
     List<Integer> updateTwo(Integer id);
 
 
 
     /**
-     * ±à¼­Êı¾İ»ØÏÔ3Permission
+     * ç¼–è¾‘æ•°æ®å›æ˜¾3Permission
      */
     List<Integer> updateThree(Integer id);
 
 
 
     /**
-     * ±à¼­´«ÈëÊı¾İ
+     * ç¼–è¾‘ä¼ å…¥æ•°æ®
      */
     void edit(Role role);
 

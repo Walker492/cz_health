@@ -52,7 +52,7 @@ public class CheckItemController {
      * @param queryPageBean
      * @return
      */
-    @PostMapping("/findPage
+    @PostMapping("/findPage")
 	@PreAuthorize("hasAuthority('CHECKITEM_QUERY')")
     public Result findPage(@RequestBody QueryPageBean queryPageBean){
         // 调用服务分页查询

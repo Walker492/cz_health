@@ -47,5 +47,6 @@
     <!--回显表格菜单查询-->
     <select id="findAllMenu" resultType="Menu">
         select * from t_menu
+    </select>
 
 </mapper>

@@ -9,6 +9,7 @@ import com.itheima.health.pojo.OrderSetting;
 import com.itheima.health.service.OrderSettingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

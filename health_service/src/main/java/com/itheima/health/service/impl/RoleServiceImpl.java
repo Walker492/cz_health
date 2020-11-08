@@ -27,22 +27,22 @@ public class RoleServiceImpl implements RoleService {
         return roleDao.findAll();
     }
 	
-	//¸Ä
+	//æ”¹
 	 /**
-     * ·ÖÒ³²éÑ¯
+     * åˆ†é¡µæŸ¥è¯¢
      * @param queryPageBean
      * @return
      */
     @Override
     public PageResult findPage(QueryPageBean queryPageBean) {
-        //Ò³ÂëÓë´óĞ¡
+        //é¡µç ä¸å¤§å°
         PageHelper.startPage(queryPageBean.getCurrentPage(),queryPageBean.getPageSize());
-        //ÅĞ¶ÏÊÇ·ñÓĞ²éÑ¯Ìõ¼ş Èç¹ûÓĞÒªÊµÏÖÄ£ºı²éÑ¯
+        //åˆ¤æ–­æ˜¯å¦æœ‰æŸ¥è¯¢æ¡ä»¶ å¦‚æœæœ‰è¦å®ç°æ¨¡ç³ŠæŸ¥è¯¢
         if (!StringUtil.isEmpty(queryPageBean.getQueryString())){
             queryPageBean.setQueryString("%"+queryPageBean.getQueryString()+"%");
         }
 
-        //Ìõ¼ş²éÑ¯,²éÑ¯Óï¾ä»á±»·ÖÒ³
+        //æ¡ä»¶æŸ¥è¯¢,æŸ¥è¯¢è¯­å¥ä¼šè¢«åˆ†é¡µ
         Page<Role> page = roleDao.findPage(queryPageBean.getQueryString());
         PageResult<Role> pageResult = new PageResult<Role>(page.getTotal(),page.getResult());
         return pageResult;
@@ -50,7 +50,7 @@ public class RoleServiceImpl implements RoleService {
 
 
     /**
-     * Ôö¼Ó
+     * å¢åŠ 
      * @param role
      * @return
      */
@@ -69,7 +69,7 @@ public class RoleServiceImpl implements RoleService {
 
 
     /**
-     * ĞÂÔöÀïÃæµÄÈ¨ÏŞ²éÑ¯
+     * æ–°å¢é‡Œé¢çš„æƒé™æŸ¥è¯¢
      * @return
      */
     @Override
@@ -80,7 +80,7 @@ public class RoleServiceImpl implements RoleService {
 
 
     /**
-     * ĞÂÔöÀïÃæµÄ²Ëµ¥²éÑ¯
+     * æ–°å¢é‡Œé¢çš„èœå•æŸ¥è¯¢
      * @return
      */
     @Override
@@ -91,7 +91,7 @@ public class RoleServiceImpl implements RoleService {
 
 
     /**
-     * É¾³ı
+     * åˆ é™¤
      * @param id
      */
     @Override
@@ -100,14 +100,14 @@ public class RoleServiceImpl implements RoleService {
         Integer RoleUserID = roleDao.findCountRoleUser();
         Integer RolePermissionID = roleDao.findCountRolePermission();
         if (!(RoleMenuID ==0&&RoleUserID==0&&RolePermissionID==0)){
-            throw new Exception("Ê¹ÓÃÖĞ°¡,Ã»·¨É¾³ı");
+            throw new Exception("ä½¿ç”¨ä¸­å•Š,æ²¡æ³•åˆ é™¤");
         }
         roleDao.delete(id);
     }
 
 
     /**
-     * ±à¼­Êı¾İ»ØÏÔ1Role
+     * ç¼–è¾‘æ•°æ®å›æ˜¾1Role
      */
     @Override
     public Role updateOne(Integer id) {
@@ -117,7 +117,7 @@ public class RoleServiceImpl implements RoleService {
 
 
     /**
-     * ±à¼­Êı¾İ»ØÏÔ2Menu
+     * ç¼–è¾‘æ•°æ®å›æ˜¾2Menu
      */
     @Override
     public List<Integer> updateTwo(Integer id) {
@@ -126,7 +126,7 @@ public class RoleServiceImpl implements RoleService {
 
 
     /**
-     * ±à¼­Êı¾İ»ØÏÔ3Permission
+     * ç¼–è¾‘æ•°æ®å›æ˜¾3Permission
      */
     @Override
     public List<Integer> updateThree(Integer id) {
@@ -136,7 +136,7 @@ public class RoleServiceImpl implements RoleService {
 
 
     /**
-     * ±à¼­´«ÈëÊı¾İ
+     * ç¼–è¾‘ä¼ å…¥æ•°æ®
      * @param role
      * @param menuIds
      * @param permissionIds
@@ -144,7 +144,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public void edit(Integer[] menuIds, Integer[] permissionIds,Role role) {
         roleDao.edit(role);
-        //ÒªÏÈÉ¾³ıÔÙ¼ÓÈë
+        //è¦å…ˆåˆ é™¤å†åŠ å…¥
         roleDao.roleDeleteMenu(role.getId());
         roleDao.roleDeletePermission(role.getId());
 

@@ -73,4 +73,3 @@ public interface MessageConstant {
     static final String UPDATE_PERMISSION_SUCCESS = "修改权限成功";
     static final String UPDATE_PERMISSION_FAIL = "修改权限失败";
 }
-}

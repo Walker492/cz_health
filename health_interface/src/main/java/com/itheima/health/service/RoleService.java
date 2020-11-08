@@ -14,53 +14,53 @@ public interface RoleService {
     List<Role> findAll();
 	
 	
-	//¸Ä
+	//æ”¹
 	
 	 /**
-     * ·ÖÒ³Ìõ¼ş²éÑ¯
+     * åˆ†é¡µæ¡ä»¶æŸ¥è¯¢
      * @param queryPageBean
      * @return
      */
     PageResult findPage(QueryPageBean queryPageBean);
 
     /**
-     * Ôö¼Ó
+     * å¢åŠ 
      * @param role
      * @return
      */
     void Add(Integer[] menuIds,Integer[] permissionIds,Role role);
 
     /**
-     * ĞÂÔöÀïÃæµÄÈ¨ÏŞ²éÑ¯
+     * æ–°å¢é‡Œé¢çš„æƒé™æŸ¥è¯¢
      * @return
      */
     List<Permission> findAllPermission();
     /**
-     * ĞÂÔöÀïÃæµÄ²Ëµ¥²éÑ¯
+     * æ–°å¢é‡Œé¢çš„èœå•æŸ¥è¯¢
      * @return
      */
     List<Menu> findAllMenu();
 
     /**
-     * É¾³ı
+     * åˆ é™¤
      * @return
      */
     void delete(Integer id) throws Exception;
     /**
-     * ±à¼­Êı¾İ»ØÏÔ1Role
+     * ç¼–è¾‘æ•°æ®å›æ˜¾1Role
      */
     Role updateOne(Integer id);
     /**
-     * ±à¼­Êı¾İ»ØÏÔ2Menu
+     * ç¼–è¾‘æ•°æ®å›æ˜¾2Menu
      */
     List<Integer> updateTwo(Integer id);
     /**
-     * ±à¼­Êı¾İ»ØÏÔ3Permission
+     * ç¼–è¾‘æ•°æ®å›æ˜¾3Permission
      */
     List<Integer> updateThree(Integer id);
 
     /**
-     * ±à¼­´«ÈëÊı¾İ
+     * ç¼–è¾‘ä¼ å…¥æ•°æ®
      * @param role
      * @param menuIds
      * @param permissionIds
