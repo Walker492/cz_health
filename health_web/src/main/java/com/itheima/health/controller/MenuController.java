@@ -31,6 +31,7 @@ public class MenuController {
      * @return
      */
     @PostMapping("/add")
+	@PreAuthorize("hasAuthority('MENU_ADD')")
     public Result add(@RequestBody Menu menu){
 
         menuService.add(menu);
@@ -44,6 +45,7 @@ public class MenuController {
      * 删除菜单表的同时还要删除菜单的 t_role_menu 表的关联
      */
     @PostMapping("/delete")
+	@PreAuthorize("hasAuthority('MENU_DELETE')")
     public Result delete(int id){
         menuService.delete(id);
 
@@ -65,6 +67,7 @@ public class MenuController {
      * 实现分页查询
      */
     @PostMapping("/findPage")
+	@PreAuthorize("hasAuthority('MENU_QUERY')")
     public Result findPage(@RequestBody QueryPageBean queryPageBean){
         PageResult<Menu> pageResult = menuService.findPage(queryPageBean);
 
@@ -86,6 +89,7 @@ public class MenuController {
      * 编辑菜单提交
      */
     @PostMapping("update")
+	@PreAuthorize("hasAuthority('MENU_EDIT')")
     public Result update(@RequestBody Menu menu){
 
         menuService.update(menu);

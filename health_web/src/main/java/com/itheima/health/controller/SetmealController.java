@@ -87,6 +87,7 @@ public class SetmealController {
      * @return
      */
     @PostMapping("/add")
+	@PreAuthorize("hasAuthority('SETMEAL_ADD')")
     public Result add(@RequestBody Setmeal setmeal, Integer[] checkgroupIds){
         // 调用服务添加
         Integer setmealId = setmealService.add(setmeal,checkgroupIds);
@@ -101,6 +102,7 @@ public class SetmealController {
      * 分页查询
      */
     @PostMapping("/findPage")
+	@PreAuthorize("hasAuthority('SETMEAL_QUERY')")
     public Result findPage(@RequestBody QueryPageBean queryPageBean){
         PageResult<Setmeal> pageResult = setmealService.findPage(queryPageBean);
         return new Result(true, MessageConstant.QUERY_SETMEAL_SUCCESS,pageResult);
@@ -112,6 +114,7 @@ public class SetmealController {
      * @return
      */
     @GetMapping("/findById")
+	@PreAuthorize("hasAuthority('SETMEAL_QUERY')")
     public Result findById(int id){
         Setmeal setmeal = setmealService.findById(id);
         /**
@@ -147,6 +150,7 @@ public class SetmealController {
      * 编辑套餐的提交
      */
     @PostMapping("/update")
+	@PreAuthorize("hasAuthority('SETMEAL_EDIT')")
     public Result update(@RequestBody Setmeal setmeal, Integer[] checkgroupIds){
         // 调用服务更新
         setmealService.update(setmeal,checkgroupIds);
@@ -161,6 +165,7 @@ public class SetmealController {
      * 删除套餐
      */
     @PostMapping("/deleteById")
+	@PreAuthorize("hasAuthority('SETMEAL_DELETE')")
     public Result deleteById(int id){
         // 调用服务删除
         setmealService.deleteById(id);
