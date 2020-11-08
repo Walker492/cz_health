@@ -64,4 +64,13 @@ public interface MessageConstant {
     static final String GET_BUSINESS_REPORT_FAIL = "获取运营统计数据失败";
     static final String GET_SETMEAL_LIST_SUCCESS = "查询套餐列表数据成功";
     static final String GET_SETMEAL_LIST_FAIL = "查询套餐列表数据失败";
+	    static final String ADD_PERMISSION_SUCCESS = "增加权限成功";
+    static final String ADD_PERMISSION_FAIL = "增加权限失败";
+    static final String DELETE_PERMISSION_SUCCESS = "删除权限成功";
+    static final String DELETE_PERMISSION_FAIL = "删除权限失败";
+    static final String GET_PERMISSION_SUCCESS = "查询权限表成功";
+    static final String GET_PERMISSION_FAIL = "查询权限表失败";
+    static final String UPDATE_PERMISSION_SUCCESS = "修改权限成功";
+    static final String UPDATE_PERMISSION_FAIL = "修改权限失败";
+}
 }

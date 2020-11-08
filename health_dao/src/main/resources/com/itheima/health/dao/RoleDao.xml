@@ -8,4 +8,44 @@
         select * from t_role
     </select>
 
+<!--改-->
+
+ <!--分页查询-->
+    <select id="findPage" parameterType="String" resultType="Role">
+        select * from t_role
+        <if test="value != null and value.length>0">
+            where keyword like #{queryString} or name like #{queryString} or description like #{description}
+        </if>
+    </select>
+
+
+
+
+    <!--增加-->
+    <insert id="Add" parameterType="Role" >
+        insert into t_role(name,keyword,description) values(#{name},#{keyword},#{description})
+    </insert>
+    <!--添加角色菜单-->
+    <insert id="roleMenu">
+        insert into t_role_menu(role_id,menu_id)
+        VALUES
+        (#{roleId},#{menuId})
+    </insert>
+    <!--添加角色权限-->
+    <insert id="rolePermission">
+        insert into t_role_permission(role_id,permission_id)
+        VALUES
+        (#{roleId},#{permissionId})
+    </insert>
+
+
+
+    <!--回显表格权限查询-->
+    <select id="findAllPermission" resultType="Permission">
+        select * from t_permission
+    </select>
+    <!--回显表格菜单查询-->
+    <select id="findAllMenu" resultType="Menu">
+        select * from t_menu
+
 </mapper>

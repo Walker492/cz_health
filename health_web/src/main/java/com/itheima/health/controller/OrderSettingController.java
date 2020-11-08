@@ -85,6 +85,7 @@ public class OrderSettingController {
      * @return
      */
     @PostMapping("/editNumberByDate")
+@PreAuthorize("hasAuthority('ORDERSETTING')")
     public Result editNumberByDate(@RequestBody OrderSetting os){
         // 调用服务更新
         orderSettingService.editNumberByDate(os);

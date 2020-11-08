@@ -34,6 +34,7 @@ public class CheckgroupController {
      * @return
      */
     @PostMapping("/add")
+	@PreAuthorize("hasAuthority('CHECKGROUP_ADD')")
     public Result add(@RequestBody CheckGroup checkGroup, Integer[] checkitemIds){
         // 调用服务添加
         checkGroupService.add(checkGroup, checkitemIds);
@@ -46,6 +47,7 @@ public class CheckgroupController {
      * @return
      */
     @PostMapping("/findPage")
+	@PreAuthorize("hasAuthority('CHECKGROUP_QUERY')")
     public Result findPage(@RequestBody QueryPageBean queryPageBean){
         // 调用服务分页查询
         PageResult<CheckGroup> pageResult = checkGroupService.findPage(queryPageBean);
@@ -56,6 +58,7 @@ public class CheckgroupController {
      * 通过id查询
      */
     @GetMapping("/findById")
+	@PreAuthorize("hasAuthority('CHECKGROUP_QUERY')")
     public Result findById(int id){
         CheckGroup checkGroup = checkGroupService.findById(id);
         return new Result(true, MessageConstant.QUERY_CHECKGROUP_SUCCESS,checkGroup);
@@ -65,6 +68,7 @@ public class CheckgroupController {
      * 通过检查组id查询选中的检查项id集合
      */
     @GetMapping("/findCheckItemIdsByCheckGroupId")
+	@PreAuthorize("hasAuthority('CHECKGROUP_QUERY')")
     public Result findCheckItemIdsByCheckGroupId(int id){
         List<Integer> checkitemIds = checkGroupService.findCheckItemIdsByCheckGroupId(id);
         return new Result(true, MessageConstant.QUERY_CHECKGROUP_SUCCESS,checkitemIds);
@@ -74,6 +78,7 @@ public class CheckgroupController {
      * 更新
      */
     @PostMapping("/update")
+	@PreAuthorize("hasAuthority('CHECKGROUP_EDIT')")
     public Result update(@RequestBody CheckGroup checkGroup, Integer[] checkitemIds){
         // 调用服务更新
         checkGroupService.update(checkGroup,checkitemIds);
@@ -84,6 +89,7 @@ public class CheckgroupController {
      * 通过id删除
      */
     @PostMapping("/deleteById")
+	@PreAuthorize("hasAuthority('CHECKGROUP_DELETE')")
     public Result deleteById(int id){
         // 调用服务删除
         checkGroupService.deleteById(id);

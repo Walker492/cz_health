@@ -37,7 +37,6 @@ public interface MemberService {
     //会员数量gender饼图
     List<Map<Integer, String>> getMemberGenderPieReport();
 
-
     //会员数量年龄段饼图
     List<Map<String, Object>> getMemberAgePieReport(List<String> agePieces);
 }

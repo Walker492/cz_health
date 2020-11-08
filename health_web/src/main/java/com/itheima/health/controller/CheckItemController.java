@@ -52,7 +52,8 @@ public class CheckItemController {
      * @param queryPageBean
      * @return
      */
-    @PostMapping("/findPage")
+    @PostMapping("/findPage
+	@PreAuthorize("hasAuthority('CHECKITEM_QUERY')")
     public Result findPage(@RequestBody QueryPageBean queryPageBean){
         // 调用服务分页查询
         PageResult<CheckItem> pageResult = checkItemService.findPage(queryPageBean);
@@ -74,6 +75,7 @@ public class CheckItemController {
      * 通过id删除
      */
     @PostMapping("/deleteById")
+	@PreAuthorize("hasAuthority('CHECKITEM_DELETE')")
     public Result deleteById(int id){
         //int i = 1/0;
         // 调用业务删除
@@ -85,6 +87,7 @@ public class CheckItemController {
      * 通过id查询
      */
     @GetMapping("findById")
+	@PreAuthorize("hasAuthority('CHECKITEM_QUERY')")
     public Result findById(int id){
         // 调用服务查询
         CheckItem checkItem = checkItemService.findById(id);
@@ -95,6 +98,7 @@ public class CheckItemController {
      * 更新检查项
      */
     @PostMapping("/update")
+	@PreAuthorize("hasAuthority('CHECKITEM_EDIT')")
     public Result update(@RequestBody CheckItem checkItem){
         // 调用服务修改
         checkItemService.update(checkItem);
