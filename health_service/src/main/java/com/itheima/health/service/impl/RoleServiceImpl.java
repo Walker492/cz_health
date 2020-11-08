@@ -16,6 +16,7 @@ import com.itheima.health.pojo.Menu;
 import com.itheima.health.pojo.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Arrays;
 import java.util.List;
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -56,6 +57,8 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public void Add(Integer[] menuIds,Integer[] permissionIds,Role role) {
+        System.out.println(Arrays.toString(menuIds));
+        System.out.println(Arrays.toString(permissionIds));
         roleDao.Add(role);
         Integer roleId = role.getId();
         for (Integer menuId : menuIds) {
@@ -96,9 +99,9 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public void delete(Integer id) throws Exception{
-        Integer RoleMenuID = roleDao.findCountRoleMenu();
-        Integer RoleUserID = roleDao.findCountRoleUser();
-        Integer RolePermissionID = roleDao.findCountRolePermission();
+        Integer RoleMenuID = roleDao.findCountRoleMenu(id);
+        Integer RoleUserID = roleDao.findCountRoleUser(id);
+        Integer RolePermissionID = roleDao.findCountRolePermission(id);
         if (!(RoleMenuID ==0&&RoleUserID==0&&RolePermissionID==0)){
             throw new Exception("使用中啊,没法删除");
         }
@@ -147,8 +150,6 @@ public class RoleServiceImpl implements RoleService {
         //要先删除再加入
         roleDao.roleDeleteMenu(role.getId());
         roleDao.roleDeletePermission(role.getId());
-
-
 
         for (Integer menuId : menuIds){
             roleDao.roleMenu(role.getId(),menuId);

@@ -14,6 +14,7 @@ import com.itheima.health.pojo.Menu;
 import com.itheima.health.pojo.Permission;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -46,7 +47,7 @@ public class RoleController {
      * @param role
      * @return
      */
-    @RequestMapping("Add")
+    @RequestMapping("add")
     public Result Add(  Integer[] menuIds,Integer[] permissionIds,@RequestBody Role role) {
         try {
        roleService.Add(menuIds,permissionIds,role);
@@ -95,14 +96,13 @@ public class RoleController {
      * 删除
      * @return
      */
-    @GetMapping("Delete")
+    @GetMapping("delete")
     public Result delete(Integer id) {
         try {
             roleService.delete(id);
             return new Result(true, "删除成功");
         } catch (Exception e) {
-            e.printStackTrace();
-            return new Result(false, "删除角色失败");
+            return new Result(false, e.getMessage());
         }
     }
     /**

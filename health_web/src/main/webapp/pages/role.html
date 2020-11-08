@@ -64,9 +64,9 @@
             </div>
             <el-table size="small" current-row-key="id" :data="dataList"  stripe highlight-current-row>
                 <el-table-column type="index" align="center" label="序号"></el-table-column>
-                <el-table-column prop="name" label="name" align="center"></el-table-column>
-                <el-table-column prop="keyword" label="keyword" align="center"></el-table-column>
-                <el-table-column prop="description" label="description" align="center"></el-table-column>
+                <el-table-column prop="name" label="角色名" align="center"></el-table-column>
+                <el-table-column prop="keyword" label="关键字" align="center"></el-table-column>
+                <el-table-column prop="description" label="描述" align="center"></el-table-column>
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
                         <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
@@ -86,7 +86,7 @@
             </div>
             <!-- 修改标签弹层 -->
             <div class="add-form">
-                <el-dialog title="修改角色" :visible.sync="dialogFormVisible">
+                <el-dialog title="新增角色" :visible.sync="dialogFormVisible">
                     <template>
                         <el-tabs v-model="activeName" type="card">
                             <el-tab-pane label="基本信息" name="first">
@@ -94,12 +94,12 @@
 
                                     <el-row>
                                         <el-col :span="12">
-                                            <el-form-item label="name">
+                                            <el-form-item label="角色名">
                                                 <el-input v-model="formData.name"/>
                                             </el-form-item>
                                         </el-col>
                                         <el-col :span="12">
-                                            <el-form-item label="keyword">
+                                            <el-form-item label="关键字">
                                                 <el-input v-model="formData.keyword"/>
                                             </el-form-item>
                                         </el-col>
@@ -107,7 +107,7 @@
 
                                     <el-row>
                                         <el-col :span="24">
-                                            <el-form-item label="description">
+                                            <el-form-item label="描述">
                                                 <el-input v-model="formData.description" type="textarea"></el-input>
                                             </el-form-item>
                                         </el-col>
@@ -121,7 +121,7 @@
                                         <thead>
                                         <tr>
                                             <th>选择</th>
-                                            <th>name</th>
+                                            <th>权限名</th>
 
 
                                         </tr>
@@ -146,7 +146,7 @@
                                         <thead>
                                         <tr>
                                             <th>选择</th>
-                                            <th>name</th>
+                                            <th>菜单名</th>
 
 
                                         </tr>
@@ -177,7 +177,7 @@
 
             <!-- 修改标签弹层 -->
             <div class="add-form">
-                <el-dialog title="新增角色" :visible.sync="dialogFormVisible4Edit">
+                <el-dialog title="修改角色" :visible.sync="dialogFormVisible4Edit">
                     <template>
                         <el-tabs v-model="activeName" type="card">
                             <el-tab-pane label="基本信息" name="first">
@@ -185,12 +185,12 @@
 
                                     <el-row>
                                         <el-col :span="12">
-                                            <el-form-item label="name">
+                                            <el-form-item label="角色名">
                                                 <el-input v-model="formData.name"/>
                                             </el-form-item>
                                         </el-col>
                                         <el-col :span="12">
-                                            <el-form-item label="keyword">
+                                            <el-form-item label="关键字">
                                                 <el-input v-model="formData.keyword"/>
                                             </el-form-item>
                                         </el-col>
@@ -198,7 +198,7 @@
 
                                     <el-row>
                                         <el-col :span="24">
-                                            <el-form-item label="description">
+                                            <el-form-item label="描述">
                                                 <el-input v-model="formData.description" type="textarea"></el-input>
                                             </el-form-item>
                                         </el-col>
@@ -212,7 +212,7 @@
                                         <thead>
                                         <tr>
                                             <th>选择</th>
-                                            <th>name</th>
+                                            <th>权限名</th>
 
                                         </tr>
                                         </thead>
@@ -235,7 +235,7 @@
                                         <thead>
                                         <tr>
                                             <th>选择</th>
-                                            <th>name</th>
+                                            <th>菜单名</th>
 
                                         </tr>
                                         </thead>
@@ -310,7 +310,7 @@
             },
             //添加
             handleAdd() {
-                axios.post("/role/Add.do?menuIds="+this.MenuIds+"&permissionIds="+this.PermissionIds,this.formData).then(response => {
+                axios.post("/role/add.do?menuIds="+this.MenuIds+"&permissionIds="+this.PermissionIds,this.formData).then(response => {
                     this.$message({
                         showClose: true,
                         message: response.data.message,
@@ -364,7 +364,7 @@
                 //1 通过检查组id获取检查组的基本信息并进行数据绑定(this.formData)
                 axios.get("/role/updateOne.do?id=" + id).then(response => {
                     this.formData = response.data.data;
-                })
+                });
 
                 axios.get("/role/updateTwo.do?id=" + id).then(response => {
                     this.MenuIds = response.data.data;
@@ -394,7 +394,7 @@
                     type: 'warning'
                 }).then(() => {
                     //ajax携带要删除的id,调用删除
-                    axios.get("/role/Delete.do?id=" + id).then(response => {
+                    axios.get("/role/delete.do?id=" + id).then(response => {
                        //获取删除的响应结果
                         this.$message({
                             showClose: true,

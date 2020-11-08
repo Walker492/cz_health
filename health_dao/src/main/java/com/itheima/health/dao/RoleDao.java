@@ -52,12 +52,12 @@ public interface RoleDao {
 
 
     //删除
-   void delete(Integer id);
-    Integer findCountRoleMenu();
+    void delete(Integer id);
+    Integer findCountRoleMenu(Integer id);
 
-    Integer findCountRoleUser();
+    Integer findCountRoleUser(Integer id);
 
-    Integer findCountRolePermission();
+    Integer findCountRolePermission(Integer id);
 
     /**
      * 编辑数据回显1Role

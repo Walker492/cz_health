@@ -297,7 +297,7 @@
         methods: {
             //编辑
             handleEdit() {
-                axios.post('/user/update.do?userIds=' + this.userIds, this.formData).then(res => {
+                axios.post('/user/update.do?roleIds=' + this.userIds, this.formData).then(res => {
                     this.$message({
                         message: res.data.message,
                         type: res.data.flag ? "success" : "error"

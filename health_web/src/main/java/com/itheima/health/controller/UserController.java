@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -95,6 +96,7 @@ public class UserController {
      */
     @PostMapping("/update")
     public Result update(@RequestBody com.itheima.health.pojo.User user, Integer[] roleIds) {
+        System.out.println(Arrays.toString(roleIds));
         String password = user.getPassword();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encode = passwordEncoder.encode(password);
