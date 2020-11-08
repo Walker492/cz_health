@@ -51,7 +51,6 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 会员数量gender饼图
-     *
      * @return
      */
     @Override
@@ -59,7 +58,6 @@ public class MemberServiceImpl implements MemberService {
 
         return memberDao.getMemberGenderPieReport();
     }
-
 
     /**
      * 会员数量年龄段饼图
